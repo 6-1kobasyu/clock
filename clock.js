@@ -1,39 +1,77 @@
-const clock = () => {
-    // 現在の日時・時刻の情報を取得
-    const d = new Date();
-  
-    // 年を取得
-    let year = d.getFullYear();
-    // 月を取得
-    let month = d.getMonth() + 1;
-    // 日を取得
-    let date = d.getDate();
-    // 曜日を取得
-    let dayNum = d.getDay();
-    const weekday = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-    let day = weekday[dayNum];
-    // 時を取得
-    let hour = d.getHours();
-    // 分を取得
-    let min = d.getMinutes();
-    // 秒を取得
-    let sec = d.getSeconds();
-  
-    // 1桁の場合は0を足して2桁に
-    month = month < 10 ? "0" + month : month;
-    date = date < 10 ? "0" + date : date;
-    hour = hour < 10 ? "0" + hour : hour;
-    min = min < 10 ? "0" + min : min;
-    sec = sec < 10 ? "0" + sec : sec;
-  
-    // 日付・時刻の文字列を作成
-    let today = `${year}.${month}.${date} ${day}`;
-    let time = `${hour}:${min}:${sec}`;
-  
-    // 文字列を出力
-    document.querySelector(".clock-date").innerText = today;
-    document.querySelector(".clock-time").innerText = time;
-  };
-  
-  // 1秒ごとにclock関数を呼び出す
-  setInterval(clock, 1000);
+(function() {
+	/**
+	 * 数値のゼロ埋め（桁を揃える）
+	 * @param {number|string} number 対象の数字
+	 * @param {number} digit 桁数
+	 * @return {string} ゼロが埋められた数字を返す
+	 */
+	var zeroPadding = function(number, digit) {
+		var numberLength = String(number).length;
+
+		if (digit > numberLength) {
+			return (new Array((digit - numberLength) + 1).join(0)) + number;
+		} else {
+			return number;
+		}
+	};
+
+	window.addEventListener('DOMContentLoaded', function() {
+		var stageElem       = document.querySelector('.analog-clock'),
+		    boardElem       = stageElem.querySelector('.movement-board'),
+		    dialsElem       = boardElem.querySelector('.dial'),
+		    dialItemElems   = dialsElem.querySelectorAll('li'),
+		    handsElem       = boardElem.querySelector('.hands'),
+		    hourHandElem    = handsElem.querySelector('.hour-hand'),
+		    minuteHandElem  = handsElem.querySelector('.minute-hand'),
+		    secondHandElem  = handsElem.querySelector('.second-hand'),
+		    digitalTimeElem = boardElem.querySelector('.digital-time'),
+		    timeHourElem    = digitalTimeElem.querySelector('.hour'),
+		    timeMinuteElem  = digitalTimeElem.querySelector('.minute'),
+		    timeSecondElem  = digitalTimeElem.querySelector('.second'),
+		    radius          = stageElem.clientWidth / 2 - 20, // 半径 - 内側に寄せる値
+		    smoothRotate    = false; // スムーズに秒針を動かすかどうか
+
+		// ダイヤルの配置
+		Array.prototype.forEach.call(dialItemElems, function(element, index) {
+			var angle  = (index + 1) * 30,
+			    radian = (angle - 90) / 180 * Math.PI,
+			    x      = radius * Math.cos(radian),
+			    y      = radius * Math.sin(radian);
+
+			element.style.transform = 'translate(' + x.toFixed(2) + 'px, ' + y.toFixed(2) + 'px)';
+		});
+
+		/**
+		 * レンダリング
+		 */
+		var render = function() {
+			var dateObj          = new Date(),
+			    timeHour         = dateObj.getHours(),
+			    timeMinute       = dateObj.getMinutes(),
+			    timeSeconds      = dateObj.getSeconds(),
+			    timeMilliseconds = dateObj.getMilliseconds(),
+			    hourHandAngle    = (timeHour / 12) * 360,
+			    minuteHandAngle  = (timeMinute / 60) * 360;
+
+			// スムーズに回転させるかどうか
+			if (smoothRotate) {
+				secondHandAngle = (Number((timeSeconds + (timeMilliseconds / 1000)).toFixed(3).replace('.', '')) / 60000) * 360;
+			} else {
+				secondHandAngle = (timeSeconds / 60) * 360;
+			}
+
+			// 針を回転
+			hourHandElem.style.transform   = 'rotate(' + hourHandAngle + 'deg)';
+			minuteHandElem.style.transform = 'rotate(' + minuteHandAngle + 'deg)';
+			secondHandElem.style.transform = 'rotate(' + secondHandAngle + 'deg)';
+
+			// デジタル表記を反映
+			timeHourElem.textContent   = zeroPadding(timeHour, 2);
+			timeMinuteElem.textContent = zeroPadding(timeMinute, 2);
+			timeSecondElem.textContent = zeroPadding(timeSeconds, 2);
+		};
+
+		setInterval(render, 10);
+		render();
+	});
+})();
