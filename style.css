@@ -54,7 +54,7 @@ div.analog-clock {
 				bottom:0;
 				width:5px;
 				height:70px;
-				background-color:#black;
+				background-color:#ea3f8d;
 				transform-origin:50% bottom;
 			}
 
@@ -65,7 +65,7 @@ div.analog-clock {
 				bottom:0;
 				width:3px;
 				height:90px;
-				background-color:#black;
+				background-color:#ea3f8d;
 				transform-origin:50% bottom;
 			}
 
@@ -76,7 +76,7 @@ div.analog-clock {
 				bottom:0;
 				width:1px;
 				height:115px;
-				background-color:#red;
+				background-color:#ea3f8d;
 				transform-origin:50% bottom;
 			}
 
