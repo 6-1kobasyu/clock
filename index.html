@@ -9,13 +9,34 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="clock">
-      <p class="clock-date"></p>
-      <p class="clock-time"></p>
-    </div>
-  </div>
-  <!-- JavaScriptファイル読み込み -->
-  <script src="clock.js"></script>
+  <div class="analog-clock">
+	<div class="movement-board">
+		<ol class="dial">
+			<li aria-label="five past">1</li>
+			<li aria-label="ten past">2</li>
+			<li aria-label="a quarter past">3</li>
+			<li aria-label="twenty past">4</li>
+			<li aria-label="twenty five past">5</li>
+			<li aria-label="half past">6</li>
+			<li aria-label="twenty five to">7</li>
+			<li aria-label="twenty to">8</li>
+			<li aria-label="quarter to">9</li>
+			<li aria-label="ten to">10</li>
+			<li aria-label="five to">11</li>
+			<li aria-label="o'clock">12</li>
+		</ol>
+		<p class="hands">
+			<span class="hour-hand"></span>
+			<span class="minute-hand"></span>
+			<span class="second-hand"></span>
+			<span class="cap"></span>
+		</p>
+		<p class="digital-time">
+			<span class="hour"></span>
+			<span class="minute"></span>
+			<span class="second"></span>
+		</p>
+	</div>
+</div>
 </body>
 </html>
